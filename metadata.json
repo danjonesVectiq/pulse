@@ -1,0 +1,6 @@
+{
+  "name": "System Availability Dashboard",
+  "description": "A platform for product owners to report system availability and for stakeholders to view system status via a dashboard with multi-colored visualizations.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
