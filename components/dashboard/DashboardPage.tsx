@@ -44,8 +44,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ systems, categorie
       </h3>
       <div className="flex flex-wrap gap-3">
         {Object.entries(AvailabilityStatus).map(([key, value]) => {
-          if (value === AvailabilityStatus.UNKNOWN && !statusEntries.some(e => e.status === AvailabilityStatus.UNKNOWN)) { // Only show Unknown if relevant
-            // return null;
+          if (value === AvailabilityStatus.UNKNOWN && !statusEntries.some(e => e.status === AvailabilityStatus.UNKNOWN)) { 
+            return null;
           }
           return (
           <div key={key} className="flex items-center bg-white/5 rounded-lg px-3 py-2 border border-white/10">
@@ -139,8 +139,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ systems, categorie
               </div>
             </div>
           </div>
-    );
-  }
 
           {/* CTA Section */}
           <div className="text-center">
@@ -174,6 +172,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ systems, categorie
           <div className="absolute bottom-20 right-10 w-5 h-5 bg-indigo-400 rounded-full animate-bounce delay-500"></div>
         </div>
       </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center space-x-4">
