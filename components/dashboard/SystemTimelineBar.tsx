@@ -69,7 +69,7 @@ export const SystemTimelineBar: React.FC<SystemTimelineBarProps> = ({ system, al
   }
 
   return (
-    <div className="w-full bg-gray-600 rounded overflow-hidden" style={{ height: '30px' }}>
+    <div className="w-full bg-white/10 rounded-lg overflow-hidden shadow-inner border border-white/20" style={{ height: '32px' }}>
       <div className="flex h-full">
         {dailyStatuses.map((dailyStatus, index) => {
           const range = statusRanges.find(r => r.status === dailyStatus.status && dailyStatus.date >= r.start && dailyStatus.date <= r.end);
@@ -81,7 +81,7 @@ export const SystemTimelineBar: React.FC<SystemTimelineBarProps> = ({ system, al
           return (
             <div
               key={`${system.id}-${dailyStatus.date}-${index}`}
-              className={`h-full ${STATUS_COLORS[dailyStatus.status]} cursor-pointer`}
+              className={`h-full ${STATUS_COLORS[dailyStatus.status]} cursor-pointer transition-all duration-200 hover:opacity-80 first:rounded-l-lg last:rounded-r-lg`}
               style={{ width }}
               title={tooltipText}
             />

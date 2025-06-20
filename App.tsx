@@ -63,44 +63,55 @@ const App: React.FC = () => {
   };
 
   const Sidebar: React.FC = () => (
-    <aside className={`fixed inset-y-0 left-0 z-30 w-64 bg-slate-800 text-white p-4 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:flex md:flex-col`}>
-      <h1 className="text-2xl font-bold mb-6 text-sky-400 flex items-center">
+    <aside className={`fixed inset-y-0 left-0 z-30 w-64 bg-gray-900/95 backdrop-blur-xl border-r border-white/10 text-white p-6 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-all duration-300 ease-in-out md:relative md:translate-x-0 md:flex md:flex-col`}>
+      <h1 className="text-2xl font-bold mb-8 text-transparent bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text flex items-center">
         <HeartIcon className="w-6 h-6 mr-2" />
         {APP_TITLE}
       </h1>
-      <nav className="flex-grow">
-        <ul>
+      <nav className="flex-grow space-y-2">
+        <ul className="space-y-1">
           {NAVIGATION_LINKS.map(link => (
-            <li key={link.name} className="mb-2">
+            <li key={link.name}>
               <Link
                 to={link.path}
-                className={`flex items-center p-2 rounded hover:bg-slate-700 transition-colors ${location.pathname === link.path ? 'bg-sky-600' : ''}`}
+                className={`flex items-center p-3 rounded-xl transition-all duration-200 group ${
+                  location.pathname === link.path 
+                    ? 'bg-gradient-to-r from-sky-500/20 to-blue-500/20 text-sky-400 border border-sky-500/30' 
+                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                }`}
               >
-                <link.icon className="w-5 h-5 mr-3" />
-                {link.name}
+                <link.icon className={`w-5 h-5 mr-3 transition-transform duration-200 ${
+                  location.pathname === link.path ? 'scale-110' : 'group-hover:scale-105'
+                }`} />
+                <span className="font-medium">{link.name}</span>
               </Link>
             </li>
           ))}
         </ul>
       </nav>
-      <div className="mt-auto text-xs text-slate-400">
+      <div className="mt-auto pt-6 border-t border-white/10">
+        <div className="text-xs text-gray-400 text-center">
         © {new Date().getFullYear()} System Pulse
+        </div>
       </div>
     </aside>
   );
 
 
   return (
-    <div className="flex h-screen bg-gray-900">
+    <div className="flex h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="bg-gray-800 shadow-md p-4 md:hidden flex justify-between items-center">
+        <header className="bg-gray-900/80 backdrop-blur-xl border-b border-white/10 p-4 md:hidden flex justify-between items-center">
           <h1 className="text-xl font-semibold text-gray-100">{NAVIGATION_LINKS.find(l => l.path === location.pathname)?.name || APP_TITLE}</h1>
-          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="text-gray-300 hover:text-gray-100">
+          <button 
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
+            className="text-gray-300 hover:text-gray-100 p-2 rounded-lg hover:bg-white/10 transition-colors"
+          >
             {isSidebarOpen ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
           </button>
         </header>
-        <main className="flex-1 overflow-x-hidden overflow-y-auto p-6 bg-gray-900">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-6">
           <Routes>
             <Route path="/" element={<DashboardPage systems={systems} categories={categories} statusEntries={statusEntries} />} />
             <Route path="/entry" element={<StatusEntryFormPage systems={systems} categories={categories} statusEntries={statusEntries} addStatusEntry={addStatusEntry} deleteStatusEntry={deleteStatusEntry} />} />
@@ -110,7 +121,7 @@ const App: React.FC = () => {
       </div>
        {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black opacity-50 z-20 md:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-20 md:hidden"
           onClick={() => setIsSidebarOpen(false)}
         ></div>
       )}
