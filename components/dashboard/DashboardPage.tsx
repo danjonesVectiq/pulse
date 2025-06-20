@@ -9,6 +9,7 @@ import { STATUS_COLORS, STATUS_TEXT_COLORS } from '../../constants';
 import { InformationCircleIcon } from '../icons/Icons';
 import { Tooltip } from '../common/Tooltip';
 import { subDays, getTodayDateString, parseDateString } from '../../utils/dateUtils';
+import { PlusCircleIcon, HeartIcon } from '../icons/Icons';
 
 
 interface DashboardPageProps {
@@ -30,36 +31,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ systems, categorie
   
   const categorizedSystems = useMemo(() => {
     return categories.map(category => ({
-      ...category,
-      systems: systems.filter(system => system.categoryId === category.id)
-    })).filter(category => category.systems.length > 0) // Only show categories with systems
-    .sort((a,b) => a.name.localeCompare(b.name));
-  }, [categories, systems]);
-
-  const Legend: React.FC = () => (
-    <Card className="mb-6">
-      <h3 className="text-lg font-semibold text-gray-100 mb-4 flex items-center">
-        <div className="w-2 h-2 bg-gradient-to-r from-sky-400 to-blue-500 rounded-full mr-3"></div>
-        Status Legend
-      </h3>
-      <div className="flex flex-wrap gap-3">
-        {Object.entries(AvailabilityStatus).map(([key, value]) => {
-          if (value === AvailabilityStatus.UNKNOWN && !statusEntries.some(e => e.status === AvailabilityStatus.UNKNOWN)) { 
-            return null;
-          }
-          return (
-          <div key={key} className="flex items-center bg-white/5 rounded-lg px-3 py-2 border border-white/10">
-            <span className={`w-3 h-3 rounded-full mr-2 ${STATUS_COLORS[value as AvailabilityStatus]} shadow-lg`}></span>
-            <span className="text-sm text-gray-200 font-medium">{value}</span>
-          </div>
-        );
-        })}
-      </div>
-    </Card>
-  );
-
-
-  if (systems.length === 0 || categories.length === 0) {
     return (
       <div className="min-h-screen relative overflow-hidden">
         {/* Animated Background */}
@@ -137,11 +108,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ systems, categorie
                 <h3 className="text-xl font-bold text-white mb-4">Lightning Fast</h3>
                 <p className="text-gray-400 leading-relaxed">Built for performance with instant loading and smooth interactions.</p>
               </div>
-            </div>
           </div>
+        </div>
+      );
+    }
 
-          {/* CTA Section */}
-          <div className="text-center">
             <div className="inline-flex flex-col sm:flex-row gap-4">
               <a 
                 href="#/manage" 
