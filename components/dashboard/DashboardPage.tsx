@@ -138,15 +138,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ systems, categorie
             <p className="text-gray-500 text-sm mt-6">
               Start monitoring your systems in under 2 minutes
             </p>
-          </div>
-
-          {/* Floating Elements */}
-          <div className="absolute top-20 left-10 w-4 h-4 bg-sky-400 rounded-full animate-bounce delay-1000"></div>
-          <div className="absolute top-40 right-20 w-3 h-3 bg-purple-400 rounded-full animate-bounce delay-2000"></div>
-          <div className="absolute bottom-40 left-20 w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-3000"></div>
-          <div className="absolute bottom-20 right-10 w-5 h-5 bg-indigo-400 rounded-full animate-bounce delay-500"></div>
         </div>
-    </div>
+
+        {/* Floating Elements */}
+        <div className="absolute top-20 left-10 w-4 h-4 bg-sky-400 rounded-full animate-bounce delay-1000"></div>
+        <div className="absolute top-40 right-20 w-3 h-3 bg-purple-400 rounded-full animate-bounce delay-2000"></div>
+        <div className="absolute bottom-40 left-20 w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-3000"></div>
+        <div className="absolute bottom-20 right-10 w-5 h-5 bg-indigo-400 rounded-full animate-bounce delay-500"></div>
+      </div>
   );
 };
     
