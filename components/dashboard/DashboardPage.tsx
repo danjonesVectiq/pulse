@@ -31,8 +31,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ systems, categorie
   
   const categorizedSystems = useMemo(() => {
     return categories.map(category => ({
-    return (
-      <div className="min-h-screen relative overflow-hidden">
+      id: category.id,
+      name: category.name,
+      systems: systems.filter(system => system.categoryId === category.id)
+    }));
+  }, [categories, systems]);
+
+  return (
+    <div className="min-h-screen relative overflow-hidden">
         {/* Animated Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.1),transparent_50%)]"></div>
@@ -108,10 +114,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ systems, categorie
                 <h3 className="text-xl font-bold text-white mb-4">Lightning Fast</h3>
                 <p className="text-gray-400 leading-relaxed">Built for performance with instant loading and smooth interactions.</p>
               </div>
+            </div>
           </div>
-        </div>
-      );
-    }
 
             <div className="inline-flex flex-col sm:flex-row gap-4">
               <a 
@@ -142,105 +146,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ systems, categorie
           <div className="absolute bottom-40 left-20 w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-3000"></div>
           <div className="absolute bottom-20 right-10 w-5 h-5 bg-indigo-400 rounded-full animate-bounce delay-500"></div>
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center space-x-4">
-        <div className="w-1 h-8 bg-gradient-to-b from-sky-400 to-blue-500 rounded-full"></div>
-        <h2 className="text-3xl font-bold text-transparent bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text tracking-tight">
-          System Status Dashboard
-        </h2>
-      </div>
-      
-      <DateFilterControls onDateRangeChange={handleDateRangeChange} initialDateRange={{start: initialStartDate, end: initialEndDate}} />
-
-      <Legend />
-
-      {categorizedSystems.length === 0 && (
-        <Card className="text-center">
-          <div className="w-12 h-12 bg-gray-700 rounded-xl flex items-center justify-center mx-auto mb-4">
-            <InformationCircleIcon className="w-6 h-6 text-gray-400" />
-          </div>
-          <p className="text-gray-400">No systems match the current categories or systems list is empty. Add systems or check category assignments.</p>
-        </Card>
-      )}
-
-      {categorizedSystems.map(category => (
-        <Card key={category.id} className="overflow-hidden">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-semibold text-gray-100 flex items-center">
-              <div className="w-2 h-2 bg-sky-400 rounded-full mr-3"></div>
-              {category.name}
-            </h3>
-            <Badge variant="info">{category.systems.length} systems</Badge>
-          </div>
-          {category.systems.length === 0 ? (
-             <p className="text-sm text-gray-400 text-center py-8">No systems in this category.</p>
-          ) : (
-            <div className="space-y-6">
-            {category.systems.sort((a,b) => a.name.localeCompare(b.name)).map(system => {
-              const systemEntries = statusEntries.filter(entry => entry.systemId === system.id);
-              const isExpanded = expandedSystems.has(system.id);
-              
-              return (
-                <div key={system.id} className="bg-white/5 rounded-lg p-4 border border-white/10">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-lg font-medium text-gray-200">{system.name}</h4>
-                    <Badge>{systemEntries.length} entries</Badge>
-                  </div>
-                  <SystemTimelineBar 
-                    system={system} 
-                    allStatusEntries={statusEntries} 
-                    dateRange={dateRange} 
-                  />
-                  <button 
-                    onClick={() => {
-                      const newExpanded = new Set(expandedSystems);
-                      if (isExpanded) {
-                        newExpanded.delete(system.id);
-                      } else {
-                        newExpanded.add(system.id);
-                      }
-                      setExpandedSystems(newExpanded);
-                    }}
-                    className="text-sm text-sky-400 hover:text-sky-300 mt-3 flex items-center transition-colors"
-                  >
-                    <svg className={`w-4 h-4 mr-1 transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                    {isExpanded ? 'Hide' : 'Show'} Status Entries ({systemEntries.length})
-                  </button>
-                  {isExpanded && (
-                    <div className="mt-4 space-y-3 bg-white/5 p-4 rounded-lg border border-white/10">
-                      {systemEntries.length === 0 ? (
-                        <p className="text-sm text-gray-400 text-center py-4">No status entries</p>
-                      ) : (
-                        systemEntries.sort((a,b) => b.date.localeCompare(a.date)).map(entry => (
-                          <div key={entry.id} className="bg-white/5 rounded-lg p-3 border-l-4 border-l-sky-400">
-                            <div className="flex items-center justify-between mb-2">
-                              <div className="font-medium text-gray-200">{parseDateString(entry.date).toLocaleDateString('en-AU')}</div>
-                              <Badge variant={entry.status === AvailabilityStatus.OPERATIONAL ? 'success' : 
-                                           entry.status === AvailabilityStatus.DEGRADED ? 'warning' : 
-                                           entry.status === AvailabilityStatus.MAINTENANCE ? 'info' : 'error'}>
-                                {entry.status}
-                              </Badge>
-                            </div>
-                            {entry.description && <div className="text-gray-400 text-sm">{entry.description}</div>}
-                          </div>
-                        ))
-                      )}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-          )}
-        </Card>
-      ))}
     </div>
   );
 };
